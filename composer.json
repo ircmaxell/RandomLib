@@ -1,0 +1,29 @@
+{
+    "name": "ircmaxell/random-lib",
+    "type": "library",
+	"version": "0.0.1-beta1",
+    "description": "A Library For Generating Secure Random Numbers",
+    "keywords": ["random", "random-numbers", "random-strings", "cryptography"],
+    "homepage": "https://github.com/ircmaxell/PHP-RandomLib",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Anthony Ferrara",
+            "email": "ircmaxell@ircmaxell.com",
+            "homepage": "http://blog.ircmaxell.com"
+        }
+    ],
+    "require-dev": {
+        "mikey179/vfsStream": "1.1.*"
+    },
+    "require": {
+        "ircmaxell/security-lib": "dev-master",
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "RandomLib":   "lib"
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "hash": "fc0152cc930dfe3d647e17cd31b0d3a9",
+    "packages": [
+        {
+            "name": "ircmaxell/security-lib",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/SecurityLib",
+                "reference": "b8ce85731e14940d92ff72274e8d19696b69a018"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/SecurityLib/zipball/b8ce85731e14940d92ff72274e8d19696b69a018",
+                "reference": "b8ce85731e14940d92ff72274e8d19696b69a018",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.1.*"
+            },
+            "time": "2013-02-13 17:23:59",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SecurityLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Base Security Library",
+            "homepage": "https://github.com/ircmaxell/PHP-SecurityLib"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "ircmaxell/security-lib": 20
+    }
+}
