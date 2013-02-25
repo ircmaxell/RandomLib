@@ -46,7 +46,7 @@ final class MicroTime implements \RandomLib\Source {
      * The current state of the random number generator.
      * @var string The state of the PRNG
      */
-    private static $state = null;
+    private static $state = '';
 
     /**
      * Return an instance of Strength indicating the strength of the source
@@ -58,12 +58,17 @@ final class MicroTime implements \RandomLib\Source {
     }
 
     public function __construct() {
-        $state = '';
+        $state = self::$state;
         if (function_exists('posix_times')) {
             $state .= serialize(posix_times());
         }
+        if (function_exists('zend_thread_id')) {
+            $state .= zend_thread_id();
+        }
         $state      .= getmypid() . memory_get_usage();
         $state      .= serialize($_ENV);
+        $state      .= serialize($_SERVER);
+        $state      .= serialize(debug_backtrace(false));
         self::$state = hash('sha512', $state, true);
         if (is_null(self::$counter)) {
             self::$counter = bindec(substr(self::$state, 0, 4));
