@@ -6,7 +6,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ircmaxell/SecurityLib",
+                "url": "https://github.com/ircmaxell/SecurityLib.git",
                 "reference": "b8ce85731e14940d92ff72274e8d19696b69a018"
             },
             "dist": {

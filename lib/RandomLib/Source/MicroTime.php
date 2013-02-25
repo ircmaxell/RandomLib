@@ -36,6 +36,16 @@ use SecurityLib\Strength;
  */
 class MicroTime implements \RandomLib\Source {
 
+    /**
+     * A static counter to ensure unique hashes and prevent state collisions
+     * @var int A counter
+     */
+    private static $counter = null;
+
+    /**
+     * The current state of the random number generator.
+     * @var string The state of the PRNG
+     */
     private $state = null;
 
     /**
@@ -55,6 +65,10 @@ class MicroTime implements \RandomLib\Source {
         $state      .= getmypid() . memory_get_usage();
         $state      .= serialize($_ENV);
         $this->state = hash('sha512', $state, true);
+        if (is_null(self::$counter)) {
+            $seed = $this->generate(strlen(dechex(PHP_INT_MAX)));
+            self::$counter = bindec($seed);
+        }
     }
 
     /**
@@ -76,7 +90,10 @@ class MicroTime implements \RandomLib\Source {
          */
         gc_collect_cycles();
         for ($i = 0; $i < $size; $i += 8) {
-            $seed        = $this->state . microtime() . pack('N', $i);
+            $seed = $this->state .
+                    microtime() .
+                    pack('N', $i) .
+                    pack('i', self::counter());
             $this->state = hash('sha512', $seed, true);
             /**
              * We only use the first 8 bytes here to prevent exposing the state
@@ -86,6 +103,15 @@ class MicroTime implements \RandomLib\Source {
             $result .= substr($this->state, 0, 8);
         }
         return substr($result, 0, $size);
+    }
+
+    private static function counter() {
+        if (self::$counter >= PHP_INT_MAX) {
+            self::$counter = -1 * PHP_INT_MAX - 1;
+        } else {
+            self::$counter++;
+        }
+        return self::$counter;
     }
 
 }
