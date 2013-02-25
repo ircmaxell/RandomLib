@@ -66,6 +66,7 @@ class MicroTime implements \RandomLib\Source {
         $state      .= serialize($_ENV);
         $this->state = hash('sha512', $state, true);
         if (is_null(self::$counter)) {
+            self::$counter = bindec(substr($this->state, 0, 4));
             $seed = $this->generate(strlen(dechex(PHP_INT_MAX)));
             self::$counter = bindec($seed);
         }
