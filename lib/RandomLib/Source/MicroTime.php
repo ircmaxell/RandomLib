@@ -34,7 +34,7 @@ use SecurityLib\Strength;
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class MicroTime implements \RandomLib\Source {
+final class MicroTime implements \RandomLib\Source {
 
     /**
      * A static counter to ensure unique hashes and prevent state collisions
@@ -46,7 +46,7 @@ class MicroTime implements \RandomLib\Source {
      * The current state of the random number generator.
      * @var string The state of the PRNG
      */
-    private $state = null;
+    private static $state = null;
 
     /**
      * Return an instance of Strength indicating the strength of the source
@@ -64,9 +64,9 @@ class MicroTime implements \RandomLib\Source {
         }
         $state      .= getmypid() . memory_get_usage();
         $state      .= serialize($_ENV);
-        $this->state = hash('sha512', $state, true);
+        self::$state = hash('sha512', $state, true);
         if (is_null(self::$counter)) {
-            self::$counter = bindec(substr($this->state, 0, 4));
+            self::$counter = bindec(substr(self::$state, 0, 4));
             $seed = $this->generate(strlen(dechex(PHP_INT_MAX)));
             self::$counter = bindec($seed);
         }
@@ -82,7 +82,7 @@ class MicroTime implements \RandomLib\Source {
     public function generate($size) {
         $result      = '';
         $seed        = microtime() . memory_get_usage();
-        $this->state = hash('sha512', $this->state . $seed, true);
+        self::$state = hash('sha512', self::$state . $seed, true);
         /**
          * Make the generated randomness a bit better by forcing a GC run which
          * should complete in a indeterminate amount of time, hence improving
@@ -91,17 +91,16 @@ class MicroTime implements \RandomLib\Source {
          */
         gc_collect_cycles();
         for ($i = 0; $i < $size; $i += 8) {
-            $seed = $this->state .
+            $seed = self::$state .
                     microtime() .
-                    pack('N', $i) .
-                    pack('i', self::counter());
-            $this->state = hash('sha512', $seed, true);
+                    pack('Ni', $i, self::counter());
+            self::$state = hash('sha512', $seed, true);
             /**
              * We only use the first 8 bytes here to prevent exposing the state
              * in its entirety, which could potentially expose other random 
              * generations in the future (in the same process)...
              */
-            $result .= substr($this->state, 0, 8);
+            $result .= substr(self::$state, 0, 8);
         }
         return substr($result, 0, $size);
     }
