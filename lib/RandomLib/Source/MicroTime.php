@@ -71,9 +71,9 @@ final class MicroTime implements \RandomLib\Source {
         $state      .= serialize(debug_backtrace(false));
         self::$state = hash('sha512', $state, true);
         if (is_null(self::$counter)) {
-            self::$counter = bindec(substr(self::$state, 0, 4));
+            list( , self::$counter) = unpack("i", substr(self::$state, 0, 4));
             $seed = $this->generate(strlen(dechex(PHP_INT_MAX)));
-            self::$counter = bindec($seed);
+            list( , self::$counter) = unpack("i", $seed);
         }
     }
 
