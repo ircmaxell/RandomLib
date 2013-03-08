@@ -17,6 +17,16 @@ class MicroTimeTest extends \PHPUnit_Framework_TestCase {
         return $data;
     }
 
+    /** 
+     * Test the initialization of the static counter (!== 0)
+     */
+    public function testCounterNotNull() {
+        $rand = new MicroTime;
+        $reflection_class = new \ReflectionClass("RandomLib\Source\MicroTime");
+        $static = $reflection_class->getStaticProperties();
+        $this->assertTrue($static['counter'] !== 0);
+    }
+    
     /**
      */
     public function testGetStrength() {
