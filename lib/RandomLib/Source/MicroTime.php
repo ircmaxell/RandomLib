@@ -68,7 +68,7 @@ final class MicroTime implements \RandomLib\Source {
         $state      .= getmypid() . memory_get_usage();
         $state      .= serialize($_ENV);
         $state      .= serialize($_SERVER);
-        $state      .= serialize(debug_backtrace(false));
+        $state      .= count(debug_backtrace(false));
         self::$state = hash('sha512', $state, true);
         if (is_null(self::$counter)) {
             list( , self::$counter) = unpack("i", substr(self::$state, 0, 4));
