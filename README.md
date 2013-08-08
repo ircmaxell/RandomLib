@@ -14,7 +14,7 @@ Usage
 A factory is used to get generators of varying strength:
 
     $factory = new RandomLib\Factory;
-    $generator = $factory->getGenerator(SecurityLib\Strength::MEDIUM);
+    $generator = $factory->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::MEDIUM));
 
 A factory can be configured with additional mixers and sources but can be
 used out of the box to create both medium and low strength generators.
