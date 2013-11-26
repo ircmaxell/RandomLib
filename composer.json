@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A Library For Generating Secure Random Numbers",
     "keywords": ["random", "random-numbers", "random-strings", "cryptography"],
-    "homepage": "https://github.com/ircmaxell/PHP-RandomLib",
+    "homepage": "https://github.com/ircmaxell/RandomLib",
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
