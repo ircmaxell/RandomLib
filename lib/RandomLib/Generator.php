@@ -146,7 +146,7 @@ class Generator {
      * @return string The generated random string
      */
     public function generateString($length, $characters = '') {
-        if ($length == 0 || strlen($characters) == 1) {
+        if ($length == 0 || strlen($characters) == 0) {
             return '';
         } elseif (empty($characters)) {
             // Default to base 64
