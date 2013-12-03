@@ -32,6 +32,61 @@ use SecurityLib\BaseConverter;
 class Generator {
 
     /**
+     * @const UPPER_CASE Flag for upper-case letters
+     */
+    const UPPER_CASE = 1;
+
+    /**
+     * @const LOWER_CASE Flag for loser-case letters
+     */
+    const LOWER_CASE = 2;
+
+    /**
+     * @const DIGITS Flag for digits
+     */
+    const DIGITS = 4;
+
+    /**
+     * @const UPPER_HEX Flag for upper-case hexadecimal symbols
+     */
+    const UPPER_HEX = 8;
+
+    /**
+     * @const LOWER_HEX Flag for lower-case hexidecimal symbols
+     */
+    const LOWER_HEX = 16;
+
+    /**
+     * @const BASE64 Flag for base64 symbols
+     */
+    const BASE64 = 32;
+
+    /**
+     * @const EASY_TO_READ Flag for upper/lower-case and digits but without "B8G6I1l|0OQDS5Z2"
+     */
+    const EASY_TO_READ = 64;
+
+    /**
+     * @const SYMBOLS Flag for additional symbols accessible via the keyboard
+     */
+    const SYMBOLS = 128;
+
+    /**
+     * @const BRACKETS Flag for brackets
+     */
+    const BRACKETS = 256;
+
+    /**
+     * @const PUNCT Flag for punctuation marks
+     */
+    const PUNCT = 512;
+
+    /**
+     * @const Flag for higher ANSI characters (symbols #127 to #255)
+     */
+    const HIGH = 1024;
+
+    /**
      * @var Mixer The mixing strategy to use for this generator instance
      */
     protected $mixer = null;
@@ -40,6 +95,24 @@ class Generator {
      * @var array An array of random number sources to use for this generator
      */
     protected $sources = array();
+
+    /**
+     * @var charArrays Holds the different character sets by Flag
+     */
+    private $charArrays = array(
+        self::UPPER_CASE => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        self::LOWER_CASE => 'abcdefghijklmnopqrstuvwxyz',
+        self::DIGITS => '0123456789',
+        self::SYMBOLS => '!"#$%&\'()* +,-./:;<=>?@[\]^_`{|}~',
+        self::BRACKETS => '()[]{}<>',
+        self::PUNCT => ',.;:',
+        self::HIGH => ':)'
+    );
+
+    /**
+     * @var charArrays Holds the different character sets by Flag
+     */
+    private $ambiguous = 'B8G6I1l|0OQDS5Z2';
 
     /**
      * Build a new instance of the generator
@@ -52,6 +125,19 @@ class Generator {
             $this->addSource($source);
         }
         $this->mixer = $mixer;
+				
+        $this->charArrays[self::UPPER_HEX] = $this->charArrays[self::DIGITS] . 'ABCDEF';
+        $this->charArrays[self::LOWER_HEX] = $this->charArrays[self::DIGITS] . 'abcdef';
+        $this->charArrays[self::EASY_TO_READ] = $this->charArrays[self::UPPER_CASE] .
+            $this->charArrays[self::LOWER_CASE] . $this->charArrays[self::DIGITS];
+        $this->charArrays[self::BASE64] = $this->charArrays[self::EASY_TO_READ] . '+/';
+        $this->charArrays[self::HIGH] = array_reduce(
+            range(127, 255),
+            function ($result, $item) {
+                return $result .= chr($item);
+            },
+            ''
+        );
     }
 
     /**
@@ -141,17 +227,34 @@ class Generator {
      * string.
      *
      * @param int    $length     The length of the generated string
-     * @param string $characters An optional list of characters to use
+     * @param mixed  $characters String: An optional list of characters to use
+     *                           Integer: Character flags
      *
      * @return string The generated random string
      */
     public function generateString($length, $characters = '') {
-        if ($length == 0 || strlen($characters) == 1) {
+        if (is_int($characters)) {
+            $tmp_char = '';
+            foreach ($this->charArrays as $flag => $chars) {
+                if ($characters & $flag) {
+                    $tmp_char .= $chars;
+                }
+            }
+
+            $tmp_char_len = strlen($tmp_char);
+            $tmp_char_array = array();
+            for ($i=0; $i < $tmp_char_len; $i++) {
+                if ($characters & self::EASY_TO_READ AND
+                    strpos($this->ambiguous, $i) !== false) continue;
+                $tmp_char_array[$tmp_char[$i]] = null;
+            }
+
+            $characters = implode('', array_keys($tmp_char_array));
+        } elseif ($length == 0 || strlen($characters) == 1) {
             return '';
-        } elseif (empty($characters)) {
+        }	elseif (empty($characters)) {
             // Default to base 64
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyz' .
-                          'ABCDEFGHIJKLMNOPQRSTUVWXYZ./';
+            $characters = $this->charArrays[self::BASE64];
         }
         // determine how many bytes to generate
         // This is basically doing floor(log(strlen($characters)))
