@@ -252,7 +252,7 @@ class Generator {
             $characters = implode('', array_keys($tmp_char_array));
         } elseif ($length == 0 || strlen($characters) == 1) {
             return '';
-        }	elseif (empty($characters)) {
+        } elseif (empty($characters)) {
             // Default to base 64
             $characters = $this->charArrays[self::BASE64];
         }
