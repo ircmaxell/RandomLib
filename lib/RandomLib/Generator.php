@@ -32,12 +32,12 @@ use SecurityLib\BaseConverter;
 class Generator {
 
     /**
-     * @const UPPER_CASE Flag for upper-case letters
+     * @const UPPER_CASE Flag for uppercase letters
      */
     const UPPER_CASE = 1;
 
     /**
-     * @const LOWER_CASE Flag for loser-case letters
+     * @const LOWER_CASE Flag for lowercase letters
      */
     const LOWER_CASE = 2;
 
@@ -47,12 +47,12 @@ class Generator {
     const DIGITS = 4;
 
     /**
-     * @const UPPER_HEX Flag for upper-case hexadecimal symbols
+     * @const UPPER_HEX Flag for uppercase hexadecimal symbols
      */
     const UPPER_HEX = 8;
 
     /**
-     * @const LOWER_HEX Flag for lower-case hexidecimal symbols
+     * @const LOWER_HEX Flag for lowercase hexidecimal symbols
      */
     const LOWER_HEX = 16;
 
