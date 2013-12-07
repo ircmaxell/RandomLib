@@ -103,10 +103,14 @@ class Generator {
         self::UPPER_CASE => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         self::LOWER_CASE => 'abcdefghijklmnopqrstuvwxyz',
         self::DIGITS => '0123456789',
+        self::UPPER_HEX => '0123456789ABCDEF',
+        self::LOWER_HEX => '0123456789abcdef',
+        self::BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+        self::EASY_TO_READ => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
         self::SYMBOLS => '!"#$%&\'()* +,-./:;<=>?@[\]^_`{|}~',
         self::BRACKETS => '()[]{}<>',
         self::PUNCT => ',.;:',
-        self::HIGH => ':)'
+        self::HIGH => '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'
     );
 
     /**
@@ -125,19 +129,6 @@ class Generator {
             $this->addSource($source);
         }
         $this->mixer = $mixer;
-				
-        $this->charArrays[self::UPPER_HEX] = $this->charArrays[self::DIGITS] . 'ABCDEF';
-        $this->charArrays[self::LOWER_HEX] = $this->charArrays[self::DIGITS] . 'abcdef';
-        $this->charArrays[self::EASY_TO_READ] = $this->charArrays[self::UPPER_CASE] .
-            $this->charArrays[self::LOWER_CASE] . $this->charArrays[self::DIGITS];
-        $this->charArrays[self::BASE64] = $this->charArrays[self::EASY_TO_READ] . '+/';
-        $this->charArrays[self::HIGH] = array_reduce(
-            range(127, 255),
-            function ($result, $item) {
-                return $result .= chr($item);
-            },
-            ''
-        );
     }
 
     /**
@@ -234,22 +225,24 @@ class Generator {
      */
     public function generateString($length, $characters = '') {
         if (is_int($characters)) {
-            $tmp_char = '';
+            // Combine character sets
+            $combined = '';
             foreach ($this->charArrays as $flag => $chars) {
                 if ($characters & $flag) {
-                    $tmp_char .= $chars;
+                    $combined .= $chars;
                 }
             }
 
-            $tmp_char_len = strlen($tmp_char);
-            $tmp_char_array = array();
-            for ($i=0; $i < $tmp_char_len; $i++) {
+            // make characters unique
+            // and ambiguous character check
+            $result = array();
+            $len = strlen($combined);
+            for ($i=0; $i < $len; $i++) {
                 if ($characters & self::EASY_TO_READ AND
                     strpos($this->ambiguous, $i) !== false) continue;
-                $tmp_char_array[$tmp_char[$i]] = null;
+                $result[$combined[$i]] = null;
             }
-
-            $characters = implode('', array_keys($tmp_char_array));
+            $characters = implode('', array_keys($result));
         } elseif ($length == 0 || strlen($characters) == 1) {
             return '';
         } elseif (empty($characters)) {
