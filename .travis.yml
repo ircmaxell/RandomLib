@@ -9,4 +9,4 @@ php:
 before_script:
   - composer install --dev
 
-script: phpunit --configuration phpunit.xml.dist test
+script: vendor/bin/phpunit --configuration phpunit.xml.dist test
