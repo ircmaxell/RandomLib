@@ -62,8 +62,11 @@ final class MicroTime implements \RandomLib\Source {
         if (function_exists('posix_times')) {
             $state .= serialize(posix_times());
         }
-        if (function_exists('zend_thread_id')) {
+        if (!defined('HHVM_VERSION') && function_exists('zend_thread_id')) {
             $state .= zend_thread_id();
+        }
+        if (function_exists('hphp_get_thread_id')) {
+            $state .= hphp_get_thread_id();
         }
         $state      .= getmypid() . memory_get_usage();
         $state      .= serialize($_ENV);
