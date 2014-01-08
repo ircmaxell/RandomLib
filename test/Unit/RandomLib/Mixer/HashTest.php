@@ -9,7 +9,7 @@ class HashTest extends \PHPUnit_Framework_TestCase {
     public static function provideMix() {
         $data = array(
             array(array(), ''),
-            array(array('', ''), ''),
+            array(array('1', '1'), '0d'),
             array(array('a'), '61'),
             // This expects 'b' because of how the mock hmac function works
             array(array('a', 'b'), '9a'),

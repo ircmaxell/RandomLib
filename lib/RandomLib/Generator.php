@@ -96,7 +96,7 @@ class Generator {
         $range = $max - $min;
         if ($range == 0) {
             return $max;
-        } elseif ($range > PHP_INT_MAX || is_float($range)) {
+        } elseif ($range > PHP_INT_MAX || is_float($range) || $range < 0) {
             /**
              * This works, because PHP will auto-convert it to a float at this point,
              * But on 64 bit systems, the float won't have enough precision to
