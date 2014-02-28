@@ -13,8 +13,10 @@ Usage
 
 A factory is used to get generators of varying strength:
 
-    $factory = new RandomLib\Factory;
-    $generator = $factory->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::MEDIUM));
+```php
+$factory = new RandomLib\Factory;
+$generator = $factory->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::MEDIUM));
+```
 
 A factory can be configured with additional mixers and sources but can be
 used out of the box to create both medium and low strength generators.
@@ -22,8 +24,9 @@ used out of the box to create both medium and low strength generators.
 Convenience methods are provided for creating high, medium, and low
 strength generators. Example:
 
-    $generator = $factory->getMediumStrengthGenerator();
-
+```php
+$generator = $factory->getMediumStrengthGenerator();
+```
 
 #### $factory->getLowStrengthGenerator()
 
@@ -62,16 +65,17 @@ A generator is used to generate random numbers and strings.
 
 Example:
 
-    // Generate a random string that is 32 bytes in length.
-    $bytes = $generator->generate(32);
+```php
+// Generate a random string that is 32 bytes in length.
+$bytes = $generator->generate(32);
 
-    // Generate a whole number between 5 and 15.
-    $randomInt = $generator->generateInt(5, 15);
+// Generate a whole number between 5 and 15.
+$randomInt = $generator->generateInt(5, 15);
 
-    // Generate a 32 character string that only contains the letters
-    // 'a', 'b', 'c', 'd', 'e', and 'f'.
-    $randomString = $generator->generateString(32, 'abcdef');
-
+// Generate a 32 character string that only contains the letters
+// 'a', 'b', 'c', 'd', 'e', and 'f'.
+$randomString = $generator->generateString(32, 'abcdef');
+```
 
 #### $generator->generate($size)
 
@@ -98,18 +102,19 @@ If no character list is specified, the following list of characters is used:
 
 **Examples:**
 
-    // Give the character list 'abcdef':
-    print $generator->generateString(32, 'abcdef')."\n";
+```php
+// Give the character list 'abcdef':
+print $generator->generateString(32, 'abcdef')."\n";
 
-    // One would expect to receive output that only contained those
-    // characters:
-    //
-    // adaeabecfbddcdaeedaedfbbcdccccfe
-    // adfbfdbfddadbfcbbefebcacbefafffa
-    // ceeadbcabecbccacdcaabbdccfadbafe
-    // abadcffabdcacdbcbafcaecabafcdbbf
-    // dbdbddacdeaceabfaefcbfafebcacdca
-
+// One would expect to receive output that only contained those
+// characters:
+//
+// adaeabecfbddcdaeedaedfbbcdccccfe
+// adfbfdbfddadbfcbbefebcacbefafffa
+// ceeadbcabecbccacdcaabbdccfadbafe
+// abadcffabdcacdbcbafcaecabafcdbbf
+// dbdbddacdeaceabfaefcbfafebcacdca
+```
 
 License
 -------
