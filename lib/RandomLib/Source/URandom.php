@@ -54,7 +54,7 @@ class URandom implements \RandomLib\Source {
      * @return string A string of the requested size
      */
     public function generate($size) {
-        if ($size == 0 || !file_exists($this->file)) {
+        if ($size == 0 || !@file_exists($this->file)) {
             return str_repeat(chr(0), $size);
         }
         $file = fopen($this->file, 'rb');
