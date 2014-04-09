@@ -110,7 +110,16 @@ class Generator {
 
         $bits  = $this->countBits($range) + 1;
         $bytes = (int) max(ceil($bits / 8), 1);
-        $mask  = (int) (pow(2, $bits) - 1);
+        if ($bits == 63) {
+            /**
+             * Fixes issue #22
+             * @see https://github.com/ircmaxell/RandomLib/issues/22
+             */
+            $mask = 0x7fffffffffffffff;
+        } else {
+            $mask  = (int) ((1 << $bits) - 1);
+        }
+
         /**
          * The mask is a better way of dropping unused bits.  Basically what it does
          * is to set all the bits in the mask to 1 that we may need.  Since the max
