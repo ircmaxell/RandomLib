@@ -117,7 +117,7 @@ class Generator {
              */
             $mask = 0x7fffffffffffffff;
         } else {
-            $mask  = (int) ((1 << $bits) - 1);
+            $mask = (int) (pow(2, $bits) - 1);
         }
 
         /**
