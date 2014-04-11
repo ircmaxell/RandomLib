@@ -159,4 +159,15 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase {
         $n = $this->generator->generateString($length, $chars);
         $this->assertEquals($expected, $n);
     }
+
+    /**
+     * This test checks for issue #22:
+     * @see https://github.com/ircmaxell/RandomLib/issues/22
+     */
+    public function testGenerateLargeRange() {
+        if (PHP_INT_MAX < pow(2, 32)) {
+            $this->markTestSkipped("Only test on 64 bit platforms");
+        }
+        $this->assertEquals(506381209866536711, $this->generator->generateInt(0, PHP_INT_MAX));
+    }
 }
