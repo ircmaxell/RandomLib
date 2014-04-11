@@ -79,10 +79,6 @@ class GeneratorStringTest extends \PHPUnit_Framework_TestCase {
             $scheme = constant("RandomLib\Generator::$schemeName");
         }
         $chars = $this->generator->generateString(strlen($expected) * 2, $scheme);
-        if ($hexOut) {
-            $chars = bin2hex($chars);
-            $expected = bin2hex($expected);
-        }
         $this->assertEquals($expected . $expected, $chars, sprintf("Testing Generator::%s failed", $schemeName));
     }
 
