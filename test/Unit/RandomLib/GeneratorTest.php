@@ -46,11 +46,11 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase {
             array(0, 'ab', ''),
             array(1, 'ab', 'a'),
             array(1, 'a', ''),
-            array(2, 'ab', 'aa'),
-            array(3, 'abc', 'aaa'),
-            array(8, '0123456789abcdef', '42024420'),
-            array(16, '0123456789abcdef', '9955115599995511'),
-            array(16, '', 'dd99dd11dd99dddd'),
+            array(2, 'ab', 'bb'),
+            array(3, 'abc', 'cac'),
+            array(8, '0123456789abcdef', '77777777'),
+            array(16, '0123456789abcdef', 'ffffffffffffffff'),
+            array(16, '', 'DDDDDDDDDDDDDDDD'),
         );
     }
 
