@@ -82,14 +82,5 @@ class GeneratorStringTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected . $expected, $chars, sprintf("Testing Generator::%s failed", $schemeName));
     }
 
-    public function testHigh() {
-        $expected = implode("", array_map("chr", range(128, 255)));
-        $expected .= $expected;
-        
-        $actual = bin2hex($this->generator->generateString(strlen($expected), Generator::CHAR_HIGH));
-        $expected = bin2hex($expected);
-    
-        $this->assertEquals($expected, $actual);
-    }    
 
 }

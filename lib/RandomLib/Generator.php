@@ -87,14 +87,9 @@ class Generator {
     const CHAR_PUNCT = 256;
 
     /**
-     * @const Flag for higher ANSI characters (symbols #127 to #255)
-     */
-    const CHAR_HIGH = 512;
-
-    /**
      * @const Flag for upper/lower-case and digits but without "B8G6I1l|0OQDS5Z2"
      */
-    const EASY_TO_READ = 1024;
+    const EASY_TO_READ = 512;
 
     /**
      * @var Mixer The mixing strategy to use for this generator instance
@@ -119,7 +114,6 @@ class Generator {
         self::CHAR_SYMBOLS => '!"#$%&\'()* +,-./:;<=>?@[\]^_`{|}~',
         self::CHAR_BRACKETS => '()[]{}<>',
         self::CHAR_PUNCT => ',.;:',
-        self::CHAR_HIGH => ''
     );
 
     /**
@@ -140,10 +134,6 @@ class Generator {
             $this->addSource($source);
         }
         $this->mixer = $mixer;
-        $this->charArrays[self::CHAR_HIGH] = "";
-        for ($i = 128; $i < 256; $i++) {
-            $this->charArrays[self::CHAR_HIGH] .= chr($i);
-        }
     }
 
     /**
