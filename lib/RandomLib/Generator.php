@@ -32,6 +32,66 @@ use SecurityLib\BaseConverter;
 class Generator {
 
     /**
+     * @const Flag for uppercase letters
+     */
+    const CHAR_UPPER = 1;
+
+    /**
+     * @const Flag for lowercase letters
+     */
+    const CHAR_LOWER = 2;
+
+    /**
+     * @const Flag for alpha characters (combines UPPER + LOWER)
+     */
+    const CHAR_ALPHA = 3; // CHAR_UPPER | CHAR_LOWER
+
+    /**
+     * @const Flag for digits
+     */
+    const CHAR_DIGITS = 4;
+
+    /**
+     * @const Flag for alpha numeric characters
+     */
+    const CHAR_ALNUM = 7; // CHAR_ALPHA | CHAR_DIGITS
+
+    /**
+     * @const Flag for uppercase hexadecimal symbols
+     */
+    const CHAR_UPPER_HEX = 12; // 8 | CHAR_DIGITS
+
+    /**
+     * @const Flag for lowercase hexidecimal symbols
+     */
+    const CHAR_LOWER_HEX = 20; // 16 | CHAR_DIGITS
+
+    /**
+     * @const Flag for base64 symbols
+     */
+    const CHAR_BASE64 = 39; // 32 | CHAR_ALNUM
+
+    /**
+     * @const Flag for additional symbols accessible via the keyboard
+     */
+    const CHAR_SYMBOLS = 64;
+
+    /**
+     * @const Flag for brackets
+     */
+    const CHAR_BRACKETS = 128;
+
+    /**
+     * @const Flag for punctuation marks
+     */
+    const CHAR_PUNCT = 256;
+
+    /**
+     * @const Flag for upper/lower-case and digits but without "B8G6I1l|0OQDS5Z2"
+     */
+    const EASY_TO_READ = 512;
+
+    /**
      * @var Mixer The mixing strategy to use for this generator instance
      */
     protected $mixer = null;
@@ -40,6 +100,28 @@ class Generator {
      * @var array An array of random number sources to use for this generator
      */
     protected $sources = array();
+
+    /**
+     * @var array The different characters, by Flag
+     */
+    protected $charArrays = array(
+        self::CHAR_UPPER => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        self::CHAR_LOWER => 'abcdefghijklmnopqrstuvwxyz',
+        self::CHAR_DIGITS => '0123456789',
+        self::CHAR_UPPER_HEX => 'ABCDEF',
+        self::CHAR_LOWER_HEX => 'abcdef',
+        self::CHAR_BASE64 => '+/',
+        self::CHAR_SYMBOLS => '!"#$%&\'()* +,-./:;<=>?@[\]^_`{|}~',
+        self::CHAR_BRACKETS => '()[]{}<>',
+        self::CHAR_PUNCT => ',.;:',
+    );
+
+    /**
+     * @internal
+     * @private
+     * @const string Ambiguous characters for "Easy To Read" sets
+     */
+    const AMBIGUOUS_CHARS = 'B8G6I1l|0OQDS5Z2()[]{}:;,.';
 
     /**
      * Build a new instance of the generator
@@ -150,31 +232,40 @@ class Generator {
      * string.
      *
      * @param int    $length     The length of the generated string
-     * @param string $characters An optional list of characters to use
+     * @param mixed  $characters String: An optional list of characters to use
+     *                           Integer: Character flags
      *
      * @return string The generated random string
      */
     public function generateString($length, $characters = '') {
+        if (is_int($characters)) {
+            // Combine character sets
+            $characters = $this->expandCharacterSets($characters);
+        }
         if ($length == 0 || strlen($characters) == 1) {
             return '';
         } elseif (empty($characters)) {
             // Default to base 64
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyz' .
-                          'ABCDEFGHIJKLMNOPQRSTUVWXYZ./';
+            $characters = $this->expandCharacterSets(self::CHAR_BASE64);
         }
+
         // determine how many bytes to generate
         // This is basically doing floor(log(strlen($characters)))
         // But it's fixed to work properly for all numbers
         $len   = strlen($characters);
-        $bytes = ceil($length * ($this->countBits($len) + 1) / 8);
+
+        // The max call here fixes an issue where we under-generate in cases
+        // where less than 8 bits are needed to represent $len
+        $bytes = $length * ceil(($this->countBits($len)) / 8);
 
         // determine mask for valid characters
-        $mask   = 255 - (255 % $len);
+        $mask   = 256 - (256 % $len);
+
         $result = '';
         do {
             $rand = $this->generate($bytes);
             for ($i = 0; $i < $bytes; $i++) {
-                if (ord($rand[$i]) > $mask) {
+                if (ord($rand[$i]) >= $mask) {
                     continue;
                 }
                 $result .= $characters[ord($rand[$i]) % $len];
@@ -218,6 +309,36 @@ class Generator {
             $log2++;
         }
         return $log2;
+    }
+
+    /**
+     * Expand a character set bitwise spec into a string character set
+     *
+     * This will also replace EASY_TO_READ characters if the flag is set
+     *
+     * @param int $spec The spec to expand (bitwise combination of flags)
+     *
+     * @return string The expanded string
+     */
+    protected function expandCharacterSets($spec) {
+        $combined = '';
+        if ($spec == self::EASY_TO_READ) {
+            $spec |= self::CHAR_ALNUM;
+        }
+        foreach ($this->charArrays as $flag => $chars) {
+            if ($flag == self::EASY_TO_READ) {
+                // handle this later
+                continue;
+            } if (($spec & $flag) === $flag) {
+                $combined .= $chars;
+            }
+        }
+        $len = strlen($combined);
+        if ($spec & self::EASY_TO_READ) {
+            // remove ambiguous characters
+            $combined = str_replace(str_split(self::AMBIGUOUS_CHARS), '', $combined);
+        } 
+        return count_chars($combined, 3);
     }
 
 }
