@@ -333,7 +333,6 @@ class Generator {
                 $combined .= $chars;
             }
         }
-        $len = strlen($combined);
         if ($spec & self::EASY_TO_READ) {
             // remove ambiguous characters
             $combined = str_replace(str_split(self::AMBIGUOUS_CHARS), '', $combined);
