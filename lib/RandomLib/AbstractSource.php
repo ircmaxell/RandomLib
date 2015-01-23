@@ -25,7 +25,7 @@ abstract class AbstractSource implements \RandomLib\Source {
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength() {
         return new Strength(Strength::VERYLOW);

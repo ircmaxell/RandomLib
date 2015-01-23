@@ -39,7 +39,7 @@ class MTRand extends \RandomLib\AbstractSource {
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength() {
         // Detect if Suhosin Hardened PHP patch is applied

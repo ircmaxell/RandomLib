@@ -31,7 +31,7 @@ interface Mixer {
     /**
      * Return an instance of Strength indicating the strength of the mixer
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength();
 
