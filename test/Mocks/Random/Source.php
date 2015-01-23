@@ -43,7 +43,16 @@ class Source extends \RandomLibTest\Mocks\AbstractMock implements \RandomLib\Sou
     public static function getStrength() {
         return static::$strength;
     }
-        
+
+    /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return boolean
+     */
+    public static function isSupported() {
+        return true;
+    }
 
     /**
      * Generate a random string of the specified size

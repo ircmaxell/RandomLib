@@ -36,6 +36,14 @@ interface Source {
     public static function getStrength();
 
     /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return boolean
+     */
+    public static function isSupported();
+
+    /**
      * Generate a random string of the specified size
      *
      * Note: If the source fails to generate enough data, the result must be

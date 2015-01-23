@@ -34,7 +34,7 @@ use SecurityLib\Strength;
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class Rand implements \RandomLib\Source {
+class Rand extends \RandomLib\AbstractSource {
 
     /**
      * Return an instance of Strength indicating the strength of the source

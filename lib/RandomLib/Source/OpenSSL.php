@@ -30,7 +30,7 @@ use SecurityLib\Strength;
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class OpenSSL implements \RandomLib\Source {
+class OpenSSL extends \RandomLib\AbstractSource {
 
     /**
      * Return an instance of Strength indicating the strength of the source
@@ -42,6 +42,16 @@ class OpenSSL implements \RandomLib\Source {
     }
 
     /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return boolean
+     */
+    public static function isSupported() {
+        return function_exists('openssl_random_pseudo_bytes');
+    }
+
+    /**
      * Generate a random string of the specified size
      *
      * @param int $size The size of the requested random string
@@ -49,7 +59,7 @@ class OpenSSL implements \RandomLib\Source {
      * @return string A string of the requested size
      */
     public function generate($size) {
-        if (!function_exists('openssl_random_pseudo_bytes') || $size < 1) {
+        if ($size < 1) {
             return str_repeat(chr(0), $size);
         }
         /**

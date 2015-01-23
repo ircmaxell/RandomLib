@@ -35,7 +35,7 @@ class Random extends URandom {
     /**
      * @var string The file to read from
      */
-    protected $file = '/dev/random';
+    protected static $file = '/dev/random';
 
     /**
      * Return an instance of Strength indicating the strength of the source

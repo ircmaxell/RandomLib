@@ -32,7 +32,7 @@ use SecurityLib\Strength;
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class UniqID implements \RandomLib\Source {
+class UniqID extends \RandomLib\AbstractSource {
 
     /**
      * Return an instance of Strength indicating the strength of the source
