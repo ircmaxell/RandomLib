@@ -19,6 +19,7 @@
 namespace RandomLib\Source;
 
 use SecurityLib\Strength;
+use SecurityLib\Util;
 
 /**
  * The UniqID Random Number Source
@@ -52,10 +53,10 @@ class UniqID implements \RandomLib\Source {
      */
     public function generate($size) {
         $result = '';
-        while (strlen($result) < $size) {
+        while (Util::safeStrlen($result) < $size) {
             $result = uniqid($result, true);
         }
-        return substr($result, 0, $size);
+        return Util::safeSubstr($result, 0, $size);
     }
 
 }
