@@ -38,13 +38,7 @@ abstract class Util {
      */
     public static function safeStrlen($string)
     {
-        // Reduce lookups in successive calls to this function
-        static $strlen = null;
-        if ($strlen === null) {
-            $strlen = \function_exists('mb_strlen');
-        }
-
-        if ($strlen) {
+        if (\function_exists('mb_strlen')) {
             return \mb_strlen($string, '8bit');
         }
         return \strlen($string);
@@ -62,13 +56,7 @@ abstract class Util {
      */
     public static function safeSubstr($string, $start = 0, $length = null)
     {
-        // Reduce lookups in successive calls to this function
-        static $substr = null;
-        if ($substr === null) {
-            $substr = \function_exists('mb_substr');
-        }
-
-        if ($substr) {
+        if (\function_exists('mb_substr')) {
             return \mb_substr($string, $start, $length, '8bit');
         } elseif ($length !== null) {
             return \substr($string, $start, $length);
