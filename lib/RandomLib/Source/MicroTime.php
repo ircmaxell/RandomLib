@@ -20,6 +20,7 @@
 namespace RandomLib\Source;
 
 use SecurityLib\Strength;
+use SecurityLib\Util;
 
 /**
  * The Microtime Random Number Source
@@ -74,8 +75,8 @@ final class MicroTime implements \RandomLib\Source {
         $state      .= count(debug_backtrace(false));
         self::$state = hash('sha512', $state, true);
         if (is_null(self::$counter)) {
-            list( , self::$counter) = unpack("i", substr(self::$state, 0, 4));
-            $seed = $this->generate(strlen(dechex(PHP_INT_MAX)));
+            list( , self::$counter) = unpack("i", Util::safeSubstr(self::$state, 0, 4));
+            $seed = $this->generate(Util::safeStrlen(dechex(PHP_INT_MAX)));
             list( , self::$counter) = unpack("i", $seed);
         }
     }
@@ -108,9 +109,9 @@ final class MicroTime implements \RandomLib\Source {
              * in its entirety, which could potentially expose other random 
              * generations in the future (in the same process)...
              */
-            $result .= substr(self::$state, 0, 8);
+            $result .= Util::safeSubstr(self::$state, 0, 8);
         }
-        return substr($result, 0, $size);
+        return Util::safeSubstr($result, 0, $size);
     }
 
     private static function counter() {

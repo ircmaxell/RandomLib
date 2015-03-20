@@ -20,6 +20,7 @@
 namespace RandomLib\Mixer;
 
 use \SecurityLib\Strength;
+use \SecurityLib\Util;
 
 /**
  * The Hash medium strength mixer class
@@ -75,7 +76,7 @@ class Hash extends \RandomLib\AbstractMixer {
      * @return int The block size
      */
     protected function getPartSize() {
-        return strlen(hash($this->hash, '', true));
+        return Util::safeStrlen(hash($this->hash, '', true));
     }
 
     /**
