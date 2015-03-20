@@ -75,7 +75,7 @@ class Hash extends \RandomLib\AbstractMixer {
      * @return int The block size
      */
     protected function getPartSize() {
-        return strlen(hash($this->hash, '', true));
+        return \RandomLib\Util::safeStrlen(hash($this->hash, '', true));
     }
 
     /**

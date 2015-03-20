@@ -52,10 +52,10 @@ class UniqID implements \RandomLib\Source {
      */
     public function generate($size) {
         $result = '';
-        while (strlen($result) < $size) {
+        while (\RandomLib\Util::safeStrlen($result) < $size) {
             $result = uniqid($result, true);
         }
-        return substr($result, 0, $size);
+        return \RandomLib\Util::safeSubstr($result, 0, $size);
     }
 
 }
