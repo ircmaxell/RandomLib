@@ -31,7 +31,6 @@ use SecurityLib\Strength;
  * @codeCoverageIgnore
  */
 class CAPICOM implements \RandomLib\Source {
-    use \RandomLib\Util;
 
     /**
      * Return an instance of Strength indicating the strength of the source
