@@ -98,7 +98,7 @@ each allowed character.
 
 If no character list is specified, the following list of characters is used:
 
-    0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./
+    0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/
 
 **Examples:**
 
