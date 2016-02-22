@@ -38,6 +38,14 @@ class OpenSSL implements \RandomLib\Source {
      * @return Strength An instance of one of the strength classes
      */
     public static function getStrength() {
+        /**
+         * Prior to PHP 5.6.10 (see https://bugs.php.net/bug.php?id=70014) the "openssl_random_pseudo_bytes"
+         * was using "RAND_pseudo_bytes" (predictable) instead of "RAND_bytes" (unpredictable).
+         */
+        if (PHP_VERSION_ID < 50610) {
+            return new Strength(Strength::MEDIUM);
+        }
+
         return new Strength(Strength::HIGH);
     }
 
