@@ -39,14 +39,33 @@ class OpenSSL implements \RandomLib\Source {
      */
     public static function getStrength() {
         /**
-         * Prior to PHP 5.6.10 (see https://bugs.php.net/bug.php?id=70014) the "openssl_random_pseudo_bytes"
+         * Prior to PHP 5.6.12 (see https://bugs.php.net/bug.php?id=70014) the "openssl_random_pseudo_bytes"
          * was using "RAND_pseudo_bytes" (predictable) instead of "RAND_bytes" (unpredictable).
+         * Release notes: http://php.net/ChangeLog-5.php#5.6.12
          */
-        if (PHP_VERSION_ID < 50610) {
-            return new Strength(Strength::MEDIUM);
+        if (PHP_VERSION_ID >= 50612) {
+            return new Strength(Strength::HIGH);
         }
-
-        return new Strength(Strength::HIGH);
+        
+        /**
+         * Prior to PHP 5.5.28 (see https://bugs.php.net/bug.php?id=70014) the "openssl_random_pseudo_bytes"
+         * was using "RAND_pseudo_bytes" (predictable) instead of "RAND_bytes" (unpredictable).
+         * Release notes: http://php.net/ChangeLog-5.php#5.5.28
+         */
+        if (PHP_VERSION_ID >= 50528 && PHP_VERSION_ID < 50600) {
+            return new Strength(Strength::HIGH);
+        }
+        
+        /**
+         * Prior to PHP 5.4.44 (see https://bugs.php.net/bug.php?id=70014) the "openssl_random_pseudo_bytes"
+         * was using "RAND_pseudo_bytes" (predictable) instead of "RAND_bytes" (unpredictable).
+         * Release notes: http://php.net/ChangeLog-5.php#5.4.44
+         */
+        if (PHP_VERSION_ID >= 50444 && PHP_VERSION_ID < 50500) {
+            return new Strength(Strength::HIGH);
+        }
+        
+        return new Strength(Strength::MEDIUM);
     }
 
     /**
