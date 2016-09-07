@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * The RandomLib library for securely generating random numbers and strings in PHP
+ *
+ * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
+ * @copyright  2011 The Authors
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    Build @@version@@
+ */
+
 /**
  * The OpenSSL Random Number Source
  *
@@ -9,12 +19,13 @@
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @copyright  2011 The Authors
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ *
  * @version    Build @@version@@
  */
-
 namespace RandomLib\Source;
 
 use SecurityLib\Strength;
@@ -27,17 +38,20 @@ use SecurityLib\Strength;
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class OpenSSL extends \RandomLib\AbstractSource {
+class OpenSSL extends \RandomLib\AbstractSource
+{
 
     /**
      * Return an instance of Strength indicating the strength of the source
      *
      * @return \SecurityLib\Strength An instance of one of the strength classes
      */
-    public static function getStrength() {
+    public static function getStrength()
+    {
         /**
          * Prior to PHP 5.6.12 (see https://bugs.php.net/bug.php?id=70014) the "openssl_random_pseudo_bytes"
          * was using "RAND_pseudo_bytes" (predictable) instead of "RAND_bytes" (unpredictable).
@@ -72,9 +86,10 @@ class OpenSSL extends \RandomLib\AbstractSource {
      * If the source is currently available.
      * Reasons might be because the library is not installed
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isSupported() {
+    public static function isSupported()
+    {
         return function_exists('openssl_random_pseudo_bytes');
     }
 
@@ -85,7 +100,8 @@ class OpenSSL extends \RandomLib\AbstractSource {
      *
      * @return string A string of the requested size
      */
-    public function generate($size) {
+    public function generate($size)
+    {
         if ($size < 1) {
             return str_repeat(chr(0), $size);
         }
@@ -97,5 +113,4 @@ class OpenSSL extends \RandomLib\AbstractSource {
          */
         return openssl_random_pseudo_bytes($size);
     }
-
 }

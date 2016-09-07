@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * The RandomLib library for securely generating random numbers and strings in PHP
+ *
+ * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
+ * @copyright  2011 The Authors
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    Build @@version@@
+ */
+
 /**
  * The Random Number Source interface.
  *
@@ -8,13 +18,13 @@
  *
  * @category   PHPPasswordLib
  * @package    Random
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @copyright  2011 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
  * @license    http://www.gnu.org/licenses/lgpl-2.1.html LGPL v 2.1
  */
-
-namespace RandomLibTest\Mocks\Random;
+namespace RandomLibtest\Mocks\Random;
 
 use SecurityLib\Strength;
 
@@ -25,13 +35,15 @@ use SecurityLib\Strength;
  *
  * @category   PHPPasswordLib
  * @package    Random
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  */
-class Source extends \RandomLibTest\Mocks\AbstractMock implements \RandomLib\Source {
-
+class Source extends \RandomLibTest\Mocks\AbstractMock implements \RandomLib\Source
+{
     public static $strength = null;
 
-    public static function init() {
+    public static function init()
+    {
         static::$strength = new Strength(Strength::VERYLOW);
     }
 
@@ -40,7 +52,8 @@ class Source extends \RandomLibTest\Mocks\AbstractMock implements \RandomLib\Sou
      *
      * @return \SecurityLib\Strength An instance of one of the strength classes
      */
-    public static function getStrength() {
+    public static function getStrength()
+    {
         return static::$strength;
     }
 
@@ -48,9 +61,10 @@ class Source extends \RandomLibTest\Mocks\AbstractMock implements \RandomLib\Sou
      * If the source is currently available.
      * Reasons might be because the library is not installed
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isSupported() {
+    public static function isSupported()
+    {
         return true;
     }
 
@@ -64,10 +78,8 @@ class Source extends \RandomLibTest\Mocks\AbstractMock implements \RandomLib\Sou
      *
      * @return string A string of the requested size
      */
-    public function generate($size) {
+    public function generate($size)
+    {
         return $this->__call('generate', array($size));
     }
-
 }
-
-

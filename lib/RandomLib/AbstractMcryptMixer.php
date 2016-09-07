@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * The RandomLib library for securely generating random numbers and strings in PHP
+ *
+ * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
+ * @copyright  2011 The Authors
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    Build @@version@@
+ */
+
 /**
  * The Mcrypt abstract mixer class
  *
@@ -7,12 +17,13 @@
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Mixer
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @copyright  2013 The Authors
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ *
  * @version    Build @@version@@
  */
-
 namespace RandomLib;
 
 /**
@@ -21,10 +32,12 @@ namespace RandomLib;
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Mixer
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @author     Chris Smith <chris@cs278.org>
  */
-abstract class AbstractMcryptMixer extends AbstractMixer {
+abstract class AbstractMcryptMixer extends AbstractMixer
+{
     /**
      * mcrypt module resource
      *
@@ -49,14 +62,16 @@ abstract class AbstractMcryptMixer extends AbstractMixer {
     /**
      * {@inheritdoc}
      */
-    public static function test() {
+    public static function test()
+    {
         return extension_loaded('mcrypt');
     }
 
     /**
      * Construct mcrypt mixer
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->mcrypt    = mcrypt_module_open($this->getCipher(), '', MCRYPT_MODE_ECB, '');
         $this->blockSize = mcrypt_enc_get_block_size($this->mcrypt);
         $this->initv     = str_repeat(chr(0), mcrypt_enc_get_iv_size($this->mcrypt));
@@ -65,7 +80,8 @@ abstract class AbstractMcryptMixer extends AbstractMixer {
     /**
      * Performs cleanup
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         if ($this->mcrypt) {
             mcrypt_module_close($this->mcrypt);
         }
@@ -81,34 +97,37 @@ abstract class AbstractMcryptMixer extends AbstractMixer {
     /**
      * {@inheritdoc}
      */
-    protected function getPartSize() {
+    protected function getPartSize()
+    {
         return $this->blockSize;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function mixParts1($part1, $part2) {
+    protected function mixParts1($part1, $part2)
+    {
         return $this->encryptBlock($part1, $part2);
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function mixParts2($part1, $part2) {
+    protected function mixParts2($part1, $part2)
+    {
         return $this->decryptBlock($part2, $part1);
     }
 
     /**
      * Encrypts a block using the suppied key
      *
-     * @param  string $input Plaintext to encrypt
-     * @param  string $key   Encryption key
+     * @param string $input Plaintext to encrypt
+     * @param string $key   Encryption key
+     *
      * @return string Resulting ciphertext
      */
-    private function encryptBlock($input, $key) {
+    private function encryptBlock($input, $key)
+    {
         if (!$input && !$key) {
             return '';
         }
@@ -123,11 +142,13 @@ abstract class AbstractMcryptMixer extends AbstractMixer {
     /**
      * Derypts a block using the suppied key
      *
-     * @param  string $input Ciphertext to decrypt
-     * @param  string $key   Encryption key
+     * @param string $input Ciphertext to decrypt
+     * @param string $key   Encryption key
+     *
      * @return string Resulting plaintext
      */
-    private function decryptBlock($input, $key) {
+    private function decryptBlock($input, $key)
+    {
         if (!$input && !$key) {
             return '';
         }
@@ -142,10 +163,12 @@ abstract class AbstractMcryptMixer extends AbstractMixer {
     /**
      * Sets up the mcrypt module
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return void
      */
-    private function prepareCipher($key) {
+    private function prepareCipher($key)
+    {
         if (0 !== mcrypt_generic_init($this->mcrypt, $key, $this->initv)) {
             throw new \RuntimeException('Failed to prepare mcrypt module');
         }

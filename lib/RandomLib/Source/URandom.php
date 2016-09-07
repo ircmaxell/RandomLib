@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * The RandomLib library for securely generating random numbers and strings in PHP
+ *
+ * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
+ * @copyright  2011 The Authors
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    Build @@version@@
+ */
+
 /**
  * The URandom Random Number Source
  *
@@ -9,12 +19,13 @@
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @copyright  2011 The Authors
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ *
  * @version    Build @@version@@
  */
-
 namespace RandomLib\Source;
 
 use SecurityLib\Strength;
@@ -27,10 +38,12 @@ use SecurityLib\Strength;
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class URandom extends \RandomLib\AbstractSource {
+class URandom extends \RandomLib\AbstractSource
+{
 
     /**
      * @var string The file to read from
@@ -42,7 +55,8 @@ class URandom extends \RandomLib\AbstractSource {
      *
      * @return \SecurityLib\Strength An instance of one of the strength classes
      */
-    public static function getStrength() {
+    public static function getStrength()
+    {
         return new Strength(Strength::MEDIUM);
     }
 
@@ -50,7 +64,7 @@ class URandom extends \RandomLib\AbstractSource {
      * If the source is currently available.
      * Reasons might be because the library is not installed
      *
-     * @return boolean
+     * @return bool
      */
     public static function isSupported()
     {
@@ -64,7 +78,8 @@ class URandom extends \RandomLib\AbstractSource {
      *
      * @return string A string of the requested size
      */
-    public function generate($size) {
+    public function generate($size)
+    {
         if ($size == 0) {
             return static::emptyValue($size);
         }
@@ -77,7 +92,7 @@ class URandom extends \RandomLib\AbstractSource {
         }
         $result = fread($file, $size);
         fclose($file);
+
         return $result;
     }
-
 }

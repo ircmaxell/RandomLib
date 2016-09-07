@@ -1,15 +1,26 @@
 <?php
+
+/*
+ * The RandomLib library for securely generating random numbers and strings in PHP
+ *
+ * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
+ * @copyright  2011 The Authors
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    Build @@version@@
+ */
+
 /**
  * PHP version 5.3
  *
  * @category  PHPSecurityLib
  * @package   Random
+ *
  * @author    Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @copyright 2011 The Authors
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ *
  * @version   Build @@version@@
  */
-
 namespace RandomLib;
 
 use SecurityLib\Strength;
@@ -20,14 +31,16 @@ use SecurityLib\Strength;
  * @category PHPSecurityLib
  * @package  Random
  */
-abstract class AbstractSource implements \RandomLib\Source {
+abstract class AbstractSource implements \RandomLib\Source
+{
 
     /**
      * Return an instance of Strength indicating the strength of the source
      *
      * @return \SecurityLib\Strength An instance of one of the strength classes
      */
-    public static function getStrength() {
+    public static function getStrength()
+    {
         return new Strength(Strength::VERYLOW);
     }
 
@@ -35,9 +48,10 @@ abstract class AbstractSource implements \RandomLib\Source {
      * If the source is currently available.
      * Reasons might be because the library is not installed
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isSupported() {
+    public static function isSupported()
+    {
         return true;
     }
 
@@ -48,8 +62,8 @@ abstract class AbstractSource implements \RandomLib\Source {
      *
      * @return string A string of the requested size
      */
-    protected static function emptyValue($size) {
+    protected static function emptyValue($size)
+    {
         return str_repeat(chr(0), $size);
     }
-
 }

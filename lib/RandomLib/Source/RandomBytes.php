@@ -10,11 +10,9 @@
  */
 
 /**
- * The MTRand Random Number Source
+ * The PHP7 Random Number Source
  *
- * This source generates low strength random numbers by using the internal
- * mt_rand() function.  By itself it is quite weak.  However when combined with
- * other sources it does provide significant benefit.
+ * This uses the inbuilt PHP7 Random Bytes function
  *
  * PHP version 5.3
  *
@@ -33,35 +31,38 @@ namespace RandomLib\Source;
 use SecurityLib\Strength;
 
 /**
- * The MTRand Random Number Source
+ * The PHP7 Random Number Source
  *
- * This source generates low strength random numbers by using the internal
- * mt_rand() function.  By itself it is quite weak.  However when combined with
- * other sources it does provide significant benefit.
+ * This uses the php7 secure generator to generate high strength numbers
  *
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
  *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
- * @codeCoverageIgnore
  */
-class MTRand extends \RandomLib\AbstractSource
+class RandomBytes extends \RandomLib\AbstractSource
 {
+
+    /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return bool
+     */
+    public static function isSupported()
+    {
+        return function_exists('random_bytes');
+    }
 
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return \SecurityLib\Strength An instance of one of the strength classes
+     * @return Strength An instance of one of the strength classes
      */
     public static function getStrength()
     {
-        // Detect if Suhosin Hardened PHP patch is applied
-        if (defined('S_ALL')) {
-            return new Strength(Strength::MEDIUM);
-        } else {
-            return new Strength(Strength::LOW);
-        }
+        return new Strength(Strength::HIGH);
     }
 
     /**
@@ -73,11 +74,10 @@ class MTRand extends \RandomLib\AbstractSource
      */
     public function generate($size)
     {
-        $result = '';
-        for ($i = 0; $i < $size; $i++) {
-            $result .= chr((mt_rand() ^ mt_rand()) % 256);
+        if (!self::isSupported()) {
+            return str_repeat(chr(0), $size);
         }
 
-        return $result;
+        return \random_bytes($size);
     }
 }

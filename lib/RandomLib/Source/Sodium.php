@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * The RandomLib library for securely generating random numbers and strings in PHP
+ *
+ * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
+ * @copyright  2011 The Authors
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    Build @@version@@
+ */
+
 /**
  * The libsodium Random Number Source
  *
@@ -9,15 +19,17 @@
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @author     Ben Ramsey <ben@benramsey.com>
  * @copyright  2011 The Authors
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ *
  * @version    Build @@version@@
+ *
  * @link       https://paragonie.com/book/pecl-libsodium
  * @link       http://pecl.php.net/package/libsodium
  */
-
 namespace RandomLib\Source;
 
 use SecurityLib\Strength;
@@ -30,10 +42,12 @@ use SecurityLib\Strength;
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @author     Ben Ramsey <ben@benramsey.com>
  */
-class Sodium implements \RandomLib\Source {
+class Sodium extends \RandomLib\AbstractSource
+{
 
     /**
      * A property that may be forcibly set to `false` in the constructor, for
@@ -49,10 +63,22 @@ class Sodium implements \RandomLib\Source {
      * @param bool $useLibsodium May be set to `false` to disable libsodium for
      *                           testing purposes
      */
-    public function __construct($useLibsodium = true) {
+    public function __construct($useLibsodium = true)
+    {
         if ($useLibsodium && extension_loaded('libsodium')) {
             $this->hasLibsodium = true;
         }
+    }
+
+    /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return bool
+     */
+    public static function isSupported()
+    {
+        return function_exists('Sodium\\randombytes_buf');
     }
 
     /**
@@ -60,7 +86,8 @@ class Sodium implements \RandomLib\Source {
      *
      * @return Strength An instance of one of the strength classes
      */
-    public static function getStrength() {
+    public static function getStrength()
+    {
         return new Strength(Strength::HIGH);
     }
 
@@ -71,12 +98,12 @@ class Sodium implements \RandomLib\Source {
      *
      * @return string A string of the requested size
      */
-    public function generate($size) {
+    public function generate($size)
+    {
         if (!$this->hasLibsodium || $size < 1) {
             return str_repeat(chr(0), $size);
         }
 
         return \Sodium\randombytes_buf($size);
     }
-
 }

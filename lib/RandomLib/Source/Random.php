@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * The RandomLib library for securely generating random numbers and strings in PHP
+ *
+ * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
+ * @copyright  2011 The Authors
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    Build @@version@@
+ */
+
 /**
  * The Random Random Number Source
  *
@@ -9,12 +19,13 @@
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @copyright  2011 The Authors
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ *
  * @version    Build @@version@@
  */
-
 namespace RandomLib\Source;
 
 use SecurityLib\Strength;
@@ -27,10 +38,12 @@ use SecurityLib\Strength;
  * @category   PHPCryptLib
  * @package    Random
  * @subpackage Source
+ *
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class Random extends URandom {
+class Random extends URandom
+{
 
     /**
      * @var string The file to read from
@@ -42,8 +55,8 @@ class Random extends URandom {
      *
      * @return \SecurityLib\Strength An instance of one of the strength classes
      */
-    public static function getStrength() {
+    public static function getStrength()
+    {
         return new Strength(Strength::HIGH);
     }
-
 }

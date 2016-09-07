@@ -28,4 +28,4 @@ before_script:
   - travis_retry composer install --prefer-source
 
 script:
-  - ./vendor/bin/phpunit --verbose
+  - make test
