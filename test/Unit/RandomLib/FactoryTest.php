@@ -28,7 +28,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             get_class($generator->getMixer()),
             'getStrength',
         ));
-        $this->assertTrue($mixer->compare(new Strength(Strength::LOW)) <= 0);
+        $this->assertTrue($mixer->compare(new Strength(Strength::VERYLOW)) <= 0);
     }
 
     /**

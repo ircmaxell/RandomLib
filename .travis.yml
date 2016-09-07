@@ -13,7 +13,7 @@ matrix:
     - php: 5.4
       env: LIBSODIUM=1
     - php: 5.3
-      env: LIBSODIUM=1
+      env: LIBSODIUM=0
     - php: hhvm
       env: LIBSODIUM=0 # libsodium extension is not supported by HHVM
 
