@@ -28,4 +28,5 @@ before_script:
   - travis_retry composer install --prefer-source
 
 script:
+  - make lint
   - make test

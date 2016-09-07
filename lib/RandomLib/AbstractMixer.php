@@ -146,7 +146,7 @@ abstract class AbstractMixer implements \RandomLib\Mixer
 
     private function str_split($string, $size)
     {
-        $blocks = [];
+        $blocks = array();
         $length = Util::safeStrlen($string);
         $parts = ceil($length / $size);
         for ($i = 0; $i < $parts; $i++) {
