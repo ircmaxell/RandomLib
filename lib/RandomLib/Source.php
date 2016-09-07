@@ -31,9 +31,17 @@ interface Source {
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength();
+
+    /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return boolean
+     */
+    public static function isSupported();
 
     /**
      * Generate a random string of the specified size

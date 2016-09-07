@@ -30,20 +30,31 @@ use SecurityLib\Strength;
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class URandom implements \RandomLib\Source {
+class URandom extends \RandomLib\AbstractSource {
 
     /**
      * @var string The file to read from
      */
-    protected $file = '/dev/urandom';
+    protected static $file = '/dev/urandom';
 
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength() {
         return new Strength(Strength::MEDIUM);
+    }
+
+    /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return boolean
+     */
+    public static function isSupported()
+    {
+        return @file_exists(static::$file);
     }
 
     /**
@@ -54,12 +65,12 @@ class URandom implements \RandomLib\Source {
      * @return string A string of the requested size
      */
     public function generate($size) {
-        if ($size == 0 || !@file_exists($this->file)) {
-            return str_repeat(chr(0), $size);
+        if ($size == 0) {
+            return static::emptyValue($size);
         }
-        $file = fopen($this->file, 'rb');
+        $file = fopen(static::$file, 'rb');
         if (!$file) {
-            return str_repeat(chr(0), $size);
+            return static::emptyValue($size);
         }
         if (function_exists('stream_set_read_buffer')) {
             stream_set_read_buffer($file, 0);

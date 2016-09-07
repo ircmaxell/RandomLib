@@ -58,15 +58,9 @@ class Factory extends \SecurityLib\AbstractFactory {
      * @throws RuntimeException If an appropriate mixing strategy isn't found
      */
     public function getGenerator(\SecurityLib\Strength $strength) {
-        $sources    = $this->getSources();
-        $newSources = array();
-        foreach ($sources as $source) {
-            if ($strength->compare($source::getStrength()) <= 0) {
-                $newSources[] = new $source;
-            }
-        }
-        $mixer = $this->findMixer($strength);
-        return new Generator($newSources, $mixer);
+        $sources = $this->findSources($strength);
+        $mixer   = $this->findMixer($strength);
+        return new Generator($sources, $mixer);
     }
 
     /**
@@ -162,6 +156,29 @@ class Factory extends \SecurityLib\AbstractFactory {
             $class
         );
         return $this;
+    }
+
+    /**
+     * Find a sources based upon the requested strength
+     *
+     * @param Strength $strength The strength mixer to find
+     *
+     * @return Source The found source
+     * @throws RuntimeException if a valid source cannot be found
+     */
+    protected function findSources(\SecurityLib\Strength $strength) {
+        $sources = array();
+        foreach ($this->getSources() as $source) {
+            if ($strength->compare($source::getStrength()) <= 0 && $source::isSupported()) {
+                $sources[] = new $source;
+            }
+        }
+
+        if (0 === count($sources)) {
+            throw new \RuntimeException('Could not find sources');
+        }
+
+        return $sources;
     }
 
     /**

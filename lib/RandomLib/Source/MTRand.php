@@ -34,12 +34,12 @@ use SecurityLib\Strength;
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-class MTRand implements \RandomLib\Source {
+class MTRand extends \RandomLib\AbstractSource {
 
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength() {
         // Detect if Suhosin Hardened PHP patch is applied

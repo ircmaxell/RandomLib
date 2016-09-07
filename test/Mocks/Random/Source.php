@@ -38,12 +38,21 @@ class Source extends \RandomLibTest\Mocks\AbstractMock implements \RandomLib\Sou
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength() {
         return static::$strength;
     }
-        
+
+    /**
+     * If the source is currently available.
+     * Reasons might be because the library is not installed
+     *
+     * @return boolean
+     */
+    public static function isSupported() {
+        return true;
+    }
 
     /**
      * Generate a random string of the specified size

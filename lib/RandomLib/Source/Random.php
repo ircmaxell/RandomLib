@@ -35,12 +35,12 @@ class Random extends URandom {
     /**
      * @var string The file to read from
      */
-    protected $file = '/dev/random';
+    protected static $file = '/dev/random';
 
     /**
      * Return an instance of Strength indicating the strength of the source
      *
-     * @return Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength An instance of one of the strength classes
      */
     public static function getStrength() {
         return new Strength(Strength::HIGH);

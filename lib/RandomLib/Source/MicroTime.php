@@ -35,7 +35,7 @@ use SecurityLib\Util;
  * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
  * @codeCoverageIgnore
  */
-final class MicroTime implements \RandomLib\Source {
+final class MicroTime extends \RandomLib\AbstractSource {
 
     /**
      * A static counter to ensure unique hashes and prevent state collisions
@@ -48,15 +48,6 @@ final class MicroTime implements \RandomLib\Source {
      * @var string The state of the PRNG
      */
     private static $state = '';
-
-    /**
-     * Return an instance of Strength indicating the strength of the source
-     *
-     * @return Strength An instance of one of the strength classes
-     */
-    public static function getStrength() {
-        return new Strength(Strength::VERYLOW);
-    }
 
     public function __construct() {
         $state = self::$state;

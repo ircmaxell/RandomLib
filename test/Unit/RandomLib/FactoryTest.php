@@ -25,6 +25,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
      * @covers RandomLib\Factory::getMediumStrengthGenerator
      * @covers RandomLib\Factory::getGenerator
      * @covers RandomLib\Factory::findMixer
+     * @covers RandomLib\Factory::findSources
      */
     public function testGetMediumStrengthGenerator() {
         $factory = new Factory;
@@ -41,5 +42,17 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Could not find sources
+     */
+    public function testNoAvailableSource()
+    {
+        $factory = new Factory;
+        $sources = new \ReflectionProperty($factory, 'sources');
+        $sources->setAccessible(true);
+        $sources->setValue($factory, array());
+        $factory->getMediumStrengthGenerator();
+    }
 
 }
