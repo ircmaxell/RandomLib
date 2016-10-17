@@ -64,6 +64,11 @@ abstract class AbstractMcryptMixer extends AbstractMixer
      */
     public static function test()
     {
+        if (version_compare(PHP_VERSION, '7.1', '>=')) {
+            // https://wiki.php.net/rfc/mcrypt-viking-funeral
+            return false;
+        }
+
         return extension_loaded('mcrypt');
     }
 

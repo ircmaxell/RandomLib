@@ -33,7 +33,7 @@ class McryptRijndael128Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        if (!extension_loaded('mcrypt')) {
+        if (!McryptRijndael128::test()) {
             $this->markTestSkipped('mcrypt extension is not available');
         }
     }
