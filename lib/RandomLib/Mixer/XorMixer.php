@@ -10,14 +10,9 @@
  */
 
 /**
- * The Hash medium strength mixer class
- *
- * This class implements a mixer based upon the recommendations in RFC 4086
- * section 5.2
+ * XOR mixer
  *
  * PHP version 5.3
- *
- * @see        http://tools.ietf.org/html/rfc4086#section-5.2
  *
  * @category   PHPCryptLib
  * @package    Random
@@ -34,12 +29,7 @@ namespace RandomLib\Mixer;
 use SecurityLib\Strength;
 
 /**
- * The Hash medium strength mixer class
- *
- * This class implements a mixer based upon the recommendations in RFC 4086
- * section 5.2
- *
- * @see        http://tools.ietf.org/html/rfc4086#section-5.2
+ * XOR mixer
  *
  * @category   PHPCryptLib
  * @package    Random
@@ -51,7 +41,7 @@ class XorMixer extends \RandomLib\AbstractMixer
 {
 
     /**
-     * Return an instance of Strength indicating the strength of the source
+     * Return an instance of Strength indicating the strength of the mixer
      *
      * @return \SecurityLib\Strength An instance of one of the strength classes
      */
@@ -90,7 +80,10 @@ class XorMixer extends \RandomLib\AbstractMixer
      */
     protected function mixParts1($part1, $part2)
     {
-        return $part1 ^ $part2;
+        // The XOR operation is done in AbstractMixer; repeating it here will
+        // cause the previous source to get XORed with itself, setting it to
+        // zero
+        return $part2;
     }
 
     /**
@@ -104,6 +97,6 @@ class XorMixer extends \RandomLib\AbstractMixer
     protected function mixParts2($part1, $part2)
     {
         // Both mixers are identical, this is for speed, not security
-        return $part1 ^ $part2;
+        return $part2;
     }
 }
