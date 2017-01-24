@@ -64,6 +64,10 @@ abstract class AbstractMcryptMixer extends AbstractMixer
      */
     public static function test()
     {
+        if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
+            return false;
+        }
+        
         return extension_loaded('mcrypt');
     }
 
