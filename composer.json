@@ -15,7 +15,8 @@
     "require-dev": {
         "mikey179/vfsStream": "^1.6",
         "friendsofphp/php-cs-fixer": "^1.11",
-        "symfony/phpunit-bridge": "3.4"
+        "symfony/phpunit-bridge": "3.4",
+        "phpunit/phpunit": "^5.0"
     },
     "require": {
         "ircmaxell/security-lib": "^1.1",
