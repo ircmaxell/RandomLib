@@ -191,7 +191,7 @@ class Factory extends \SecurityLib\AbstractFactory
      *
      * @throws RuntimeException if a valid source cannot be found
      *
-     * @return Source The found source
+     * @return Source[] The found source
      */
     protected function findSources(\SecurityLib\Strength $strength)
     {
